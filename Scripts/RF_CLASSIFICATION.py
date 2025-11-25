@@ -1,8 +1,5 @@
 # -*- coding: utf-8 -*-
 """
-Random Forest - Muestras equilibradas
-- A partir de: 70% datos en el conjunto de entrenamiento (valor CE, se puede modificar)
-
 @author: ASIER HERRERA
 """
 from sklearn import model_selection
@@ -66,12 +63,7 @@ def RF(df,CE, bandas):
     print('Entrenando el modelo...')
     # Entrenamiento del árbol de decisión
     RF.fit(X_train, y_train)
-    # print('Modelo entrenado. Guardando modelo...',tiempo())
-    # print(os.path.join(dirfin,'RF_'+bandas+'_'+nivel+'.joblib'))
-    # joblib.dump(RF,os.path.join(dirfin,'RF_'+bandas+'_'+nivel+'.joblib'), compress = 3)
-    # print('Modelo guardado',tiempo())
-    # Se realizan las predicciones del árbol de decisión con los ejemplos de entrenamiento
-    print('Clasificando...')
+    print('Classifying...')
     y_ptrain = RF.predict(X_train)
     # Predicción de los datos de test
     y_ptest = RF.predict(X_test)
@@ -123,14 +115,14 @@ def RF(df,CE, bandas):
     print('Calculando variables de importancia...')
     
     #########################
-    #IMPORTANCIA DE VARIABLES
+    #Feature importance
     #########################
     #Random Forest Built-in Feature Importance: Gini importance (or median decrease impurity)
     gini_importance = RF.feature_importances_ #MDG (MDI)
     dfguradar = pd.DataFrame(zip(colsx,gini_importance), columns = ['variable','MDG']).sort_values(by = 'MDG', ascending = False)
     dfguradar.to_excel(os.path.join(dirfin,bandas+'_MDG_'+'.xlsx'))#poner nombre que yo quiera
     
-    print('Leyendo dfmix...')
+    print('Reading dfmix...')
 
 directory_path = "C:/Users/Asier/Desktop/Proyecto ReSAg/Archivos/"
 
@@ -155,10 +147,11 @@ for comb, bandas in zip(combs, bandass):
     create_dir(dirfin)
     print(dirfin)
     ordencols.to_excel(os.path.join(dirfin,'OrdenColumnasRF_'+'.xlsx'))
-    print('Realizando clasificación')
+    print('Classifying')
     # dfnivel = dfmix[[nivel]+[x for x in dfmix if x not in niveles]]
     RF(df_i,CE = CE,bandas = bandas)
             
     
        
+
 
